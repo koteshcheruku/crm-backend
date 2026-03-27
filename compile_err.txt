@@ -1,0 +1,55 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] --------------------------< com.example:crm >---------------------------
+[INFO] Building crm 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ crm ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 0 resource from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.1:compile (default-compile) @ crm ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 74 source files with javac [debug parameters release 21] to target\classes
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] /C:/Users/kotes/OneDrive/Desktop/CRM/my-crm-backend/src/main/java/com/example/crm/Dto/UserPrincipal.java:[21,89] cannot find symbol
+  symbol:   method name()
+  location: class com.example.crm.Model.RoleModel
+[ERROR] /C:/Users/kotes/OneDrive/Desktop/CRM/my-crm-backend/src/main/java/com/example/crm/service/AuthService.java:[49,65] cannot find symbol
+  symbol:   method name()
+  location: class com.example.crm.Model.RoleModel
+[ERROR] /C:/Users/kotes/OneDrive/Desktop/CRM/my-crm-backend/src/main/java/com/example/crm/service/dashboardService.java:[26,43] incomparable types: com.example.crm.Model.RoleModel and com.example.crm.Enum.EmpRole
+[ERROR] /C:/Users/kotes/OneDrive/Desktop/CRM/my-crm-backend/src/main/java/com/example/crm/service/dashboardService.java:[26,78] incomparable types: com.example.crm.Model.RoleModel and com.example.crm.Enum.EmpRole
+[ERROR] /C:/Users/kotes/OneDrive/Desktop/CRM/my-crm-backend/src/main/java/com/example/crm/service/NotificationService.java:[54,36] cannot find symbol
+  symbol:   method name()
+  location: class com.example.crm.Model.RoleModel
+[INFO] 5 errors 
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  6.081 s
+[INFO] Finished at: 2026-03-26T14:19:19+05:30
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.14.1:compile (default-compile) on project crm: Compilation failure: Compilation failure: 
+[ERROR] /C:/Users/kotes/OneDrive/Desktop/CRM/my-crm-backend/src/main/java/com/example/crm/Dto/UserPrincipal.java:[21,89] cannot find symbol
+[ERROR]   symbol:   method name()
+[ERROR]   location: class com.example.crm.Model.RoleModel
+[ERROR] /C:/Users/kotes/OneDrive/Desktop/CRM/my-crm-backend/src/main/java/com/example/crm/service/AuthService.java:[49,65] cannot find symbol
+[ERROR]   symbol:   method name()
+[ERROR]   location: class com.example.crm.Model.RoleModel
+[ERROR] /C:/Users/kotes/OneDrive/Desktop/CRM/my-crm-backend/src/main/java/com/example/crm/service/dashboardService.java:[26,43] incomparable types: com.example.crm.Model.RoleModel and com.example.crm.Enum.EmpRole
+[ERROR] /C:/Users/kotes/OneDrive/Desktop/CRM/my-crm-backend/src/main/java/com/example/crm/service/dashboardService.java:[26,78] incomparable types: com.example.crm.Model.RoleModel and com.example.crm.Enum.EmpRole
+[ERROR] /C:/Users/kotes/OneDrive/Desktop/CRM/my-crm-backend/src/main/java/com/example/crm/service/NotificationService.java:[54,36] cannot find symbol
+[ERROR]   symbol:   method name()
+[ERROR]   location: class com.example.crm.Model.RoleModel
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

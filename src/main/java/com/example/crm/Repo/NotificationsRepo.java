@@ -1,0 +1,12 @@
+package com.example.crm.Repo;
+
+import com.example.crm.Model.NotificationModel;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public interface NotificationsRepo extends JpaRepository<NotificationModel, Long> {
+    List<NotificationModel> findTop50ByRecipientUsernameOrderByCreatedAtDesc(String recipientUsername);
+}
