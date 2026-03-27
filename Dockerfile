@@ -1,7 +1,7 @@
-# Use Java 17
-FROM openjdk:17-jdk-slim
+# Use Java 21 (recommended)
+FROM eclipse-temurin:21-jdk
 
-# Copy jar file
+# Copy jar
 COPY target/*.jar app.jar
 
 # Run app
