@@ -99,7 +99,7 @@ public class AuthService {
 
         Map<String, String> result = new HashMap<>();
         result.put("inviteToken", token);
-        result.put("inviteLink", "http://localhost:5173/invite/" + token);
+        result.put("inviteLink", "https://crm-backend-xsl9.onrender.com/invite/" + token);
         return ResponseEntity.ok(result);
     }
 
