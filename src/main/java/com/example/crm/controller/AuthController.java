@@ -33,12 +33,6 @@ public class AuthController {
     private AuthService authService;
     @Autowired
     private JwtService jwtService;
-    @Autowired
-    private UsersRepo usersRepo;
-    @Autowired
-    private RoleRepo roleRepo;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @PostMapping("/api/login")
     public ResponseEntity<?> loginVerification(
@@ -83,90 +77,31 @@ public class AuthController {
         }
     }
 
-    // ─── Invite Flow ────────────────────────────────────────────────────────────
-
-    /**
-     * POST /api/auth/invite  (Admin-only, secured via SecurityConfig)
-     * Creates a partial user with a UUID invite token and returns the invite link.
-     * Body: { "username", "fullname", "email", "role" }
-     */
     @PostMapping("/api/auth/invite")
     public ResponseEntity<?> createInvite(@RequestBody Map<String, String> body) {
-        String email = body.get("email");
-        String username = body.get("username");
-        String fullname = body.get("fullname");
-        String roleStr = body.get("role");
-
-        if (email == null || roleStr == null) {
-            return ResponseEntity.badRequest().body("email and role are required");
+        try {
+            return authService.createInvite(body);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create invite");
         }
-        if (usersRepo.existsByEmail(email)) {
-            return ResponseEntity.badRequest().body("A user with that email already exists");
-        }
-
-        RoleModel role = roleRepo.findByName(roleStr.toUpperCase()).orElse(null);
-        if (role == null) {
-            return ResponseEntity.badRequest().body("Invalid role: " + roleStr);
-        }
-
-        String token = UUID.randomUUID().toString();
-        UsersModel user = new UsersModel();
-        user.setEmail(email);
-        user.setUsername(username != null ? username : email.split("@")[0]);
-        user.setFullname(fullname != null ? fullname : "");
-        user.setRole(role);
-        user.setInviteToken(token);
-        user.setApprovalStatus("PENDING");
-        user.setStatus("Inactive");
-        user.setPassword("__INVITE_PLACEHOLDER__");
-        user.setJoinedDate(LocalDate.now());
-        usersRepo.save(user);
-
-        Map<String, String> result = new HashMap<>();
-        result.put("inviteToken", token);
-        result.put("inviteLink", "http://localhost:5173/invite/" + token);
-        return ResponseEntity.ok(result);
     }
 
-    /**
-     * GET /api/auth/invite/{token}  (public)
-     * Returns partial user info for pre-filling the invite form.
-     */
     @GetMapping("/api/auth/invite/{token}")
     public ResponseEntity<?> getInviteInfo(@PathVariable String token) {
-        Optional<UsersModel> opt = usersRepo.findByInviteToken(token);
-        if (opt.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invalid or expired invite link");
+        try {
+            return authService.getInviteInfo(token);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to get invite info");
         }
-        UsersModel u = opt.get();
-        Map<String, Object> info = new HashMap<>();
-        info.put("username", u.getUsername());
-        info.put("fullname", u.getFullname());
-        info.put("email", u.getEmail());
-        info.put("role", u.getRole() != null ? u.getRole().getName() : null);
-        return ResponseEntity.ok(info);
     }
 
-    /**
-     * POST /api/auth/register/{token}  (public)
-     * Accepts { "password" }, sets password, clears invite token, marks PENDING.
-     */
     @PostMapping("/api/auth/register/{token}")
     public ResponseEntity<?> registerViaInvite(@PathVariable String token,
                                                @RequestBody Map<String, String> body) {
-        Optional<UsersModel> opt = usersRepo.findByInviteToken(token);
-        if (opt.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invalid or expired invite link");
+        try {
+            return authService.registerViaInvite(token,body);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to register");
         }
-        String password = body.get("password");
-        if (password == null || password.length() < 6) {
-            return ResponseEntity.badRequest().body("Password must be at least 6 characters");
-        }
-        UsersModel user = opt.get();
-        user.setPassword(passwordEncoder.encode(password));
-        user.setInviteToken(null);
-        user.setApprovalStatus("PENDING");
-        usersRepo.save(user);
-        return ResponseEntity.ok(Map.of("message", "Registration successful. Awaiting admin approval."));
     }
 }
